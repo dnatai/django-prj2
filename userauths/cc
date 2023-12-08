@@ -1,0 +1,134 @@
+create database KT3
+go
+use KT3
+go
+set dateformat dmy
+go
+-- tao bang
+CREATE TABLE PHONGBAN(MAPB CHAR(10) NOT NULL, TENPB NVARCHAR(30) NOT NULL)
+
+
+GO
+create table NHANVIEN(MANV CHAR(10) NOT NULL,TENNV NVARCHAR(30),NGAYSINH nvarchar(20),GIOITINH NCHAR(3), SODT CHAR(12), DIACHI NVARCHAR(30), MAPB CHAR(10))
+
+
+
+GO
+ALTER TABLE PHONGBAN
+ADD CONSTRAINT PK_PB PRIMARY KEY (MAPB)
+GO
+ALTER TABLE NHANVIEN
+ADD CONSTRAINT PK_NV PRIMARY KEY (MANV)
+GO
+
+ALTER TABLE NHANVIEN
+ADD CONSTRAINT FK_NV_PB FOREIGN KEY (MAPB) REFERENCES PHONGBAN(MAPB)
+
+--THEM DU LIEU PHONG BAN
+GO
+INSERT INTO PHONGBAN (MAPB, TENPB)
+VALUES ('PB001', N'NHAN SU')
+
+GO
+INSERT INTO PHONGBAN (MAPB, TENPB)
+VALUES ('PB002', N'KE HOACH')
+
+GO
+INSERT INTO PHONGBAN (MAPB, TENPB)
+VALUES ('PB003', N'VAT TU')
+
+GO
+INSERT INTO PHONGBAN (MAPB, TENPB)
+VALUES ('PB004', N'KE TOAN')
+
+GO
+INSERT INTO PHONGBAN (MAPB, TENPB)
+VALUES ('PB005', N'NGHIEP VU')
+
+-- Sinh viên viết các store để thực hiện cho chương trình
+
+GO 
+INSERT INTO NHANVIEN
+(MANV,TENNV,NGAYSINH,GIOITINH,SODT,DIACHI,MAPB) VALUES
+('NV001',N'Phan Long Khánh','14/06/2001','Nam','0777855202','TPHCM','PB001'),
+('NV002',N'Phan Long Khánh','14/06/2001','Nam','0777855202','TPHCM','PB002'),
+('NV003',N'Phan Long Khánh','14/06/2001','Nam','0777855202','TPHCM','PB003');
+-- Thêm Nhân Viên
+
+--Storetedproduce
+create proc sp_themNhanVien(@MaNV char(10),@Hoten nvarchar(30),@NgaySinh nvarchar(20),@GioiTinh Nchar(3),@SDT char(12),@DiaChi nvarchar(30),@MAPB char(10))
+as
+INSERT INTO NHANVIEN(MANV,TENNV,NGAYSINH,GIOITINH,SODT,DIACHI,MAPB) 
+VALUES(@MANV,@HOTEN,@NGAYSINH,@GIOITINH,@SDT,@DIACHI,@MAPB)
+go
+
+create proc sp_themNhanVien1(@MaNV char(10),@Hoten nvarchar(30),@NgaySinh nvarchar(20),@GioiTinh Nchar(3),@SDT char(12),@DiaChi nvarchar(30),@MAPB char(10))
+AS
+BEGIN
+INSERT INTO NHANVIEN (MANV,TENNV,NGAYSINH,GIOITINH,SODT,DIACHI,MAPB) Values
+(@MaNV,@Hoten,@NgaySinh,@GioiTinh,@SDT,@DiaChi,@MAPB)
+create proc sp_XoaNV(@MaNV char(10))
+as
+delete NHANVIEN where MANV=@MaNV
+go
+
+create proc sp_SuaNV(@MaNV char(10),@Hoten nvarchar(30),@NgaySinh nvarchar(20),@GioiTinh Nchar(3),@SDT char(12),@DiaChi nvarchar(30),@MAPB char(10))
+as
+update
+NHANVIEN
+set TENNV=@Hoten where MANV=@MaNV
+
+create proc sp_layDSNV
+as
+select *
+from NHANVIEN
+
+
+GO
+CREATE PROC [dbo].[ThemNhanVien]
+@MaNV char(10),@Hoten nvarchar(30),@NgaySinh nvarchar(20),@GioiTinh Nchar(3),@SDT char(12),@DiaChi nvarchar(30),@MAPB char(10)
+AS
+BEGIN
+INSERT INTO NHANVIEN (MANV,TENNV,NGAYSINH,GIOITINH,SODT,DIACHI,MAPB) Values
+(@MaNV,@Hoten,@NgaySinh,@GioiTinh,@SDT,@DiaChi,@MAPB)
+END;
+
+-- Sửa Nhân Viên
+GO 
+CREATE PROC [dbo].[SuaNhanVien]
+@MaNV char(10),@Hoten nvarchar(30),@NgaySinh nvarchar(20),@GioiTinh Nchar(3),@SDT char(12),@DiaChi nvarchar(30),@MAPB char(10)
+AS
+BEGIN
+UPDATE NHANVIEN
+set MANV = @MaNV , TENNV = @Hoten, NGAYSINH = @NgaySinh , GIOITINH = @GioiTinh, SODT =@SDT, DIACHI = @DiaChi , MAPB = @MAPB
+WHERE MANV = @MaNV
+END;
+
+-- Xóa Nhân Viên
+GO
+CREATE PROC [dbo].[XoaNhanVien]
+@MaNV char(10)
+AS
+BEGIN
+DELETE FROM NHANVIEN WHERE MANV = @MaNV
+END;
+
+--Tìm Thông Tin theo mã
+GO
+CREATE PROC [dbo].[TimNhanVienTheoMa]
+@MaNV char(10)
+AS
+BEGIN
+SELECT MANV FROM NHANVIEN WHERE MANV = @MaNV;
+END;
+
+----Tìm Thông Tin theo Tên
+
+GO
+CREATE PROC [dbo].[TimNhanVienTheoTen]
+@HoTen char(10)
+AS
+BEGIN
+SELECT TENNV  FROM NHANVIEN WHERE TENNV = @HoTen;
+END;
+
