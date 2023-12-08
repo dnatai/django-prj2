@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pending Memberships</title>
+</head>
+<body>
+    <h1>Pending Memberships for {{ group.name }}</h1>
+
+    {% if pending_memberships %}
+        <ul>
+            {% for membership in pending_memberships %}
+                <li>
+                    <p>User: {{ membership.user.username }}</p>
+                    <p>Status: {{ membership.status }}</p>
+                    <button class="accept">
+                        {% comment %} <a href="{% url 'confirm-membership' user.id 'approve' group.id  %}" class="accept-link">Xác nhận</a> {% endcomment %}
+                    </button>
+                    <button class="reject">
+                        {% comment %} <a href="{% url 'confirm-membership' message.user.id 'reject' message.group.id %}" class="reject-link">Từ chối</a> {% endcomment %}
+                    </button>
+                    
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No pending membership requests</p>
+    {% endif %}
+
+    <a href="{% url 'core:group_post_list' group_id=group.id %}">Back to Group Post List</a>
+</body>
+</html>

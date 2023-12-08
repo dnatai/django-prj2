@@ -1,0 +1,11 @@
+{% block content %}
+  <h2>Block User</h2>
+  <p>Are you sure you want to block {{ blocked_user.username}}?</p>
+
+  <form method="post" action="{% url 'core:block_user' blocked_user.id %}">
+    {% csrf_token %}
+    <button type="submit">Block User</button>
+  </form>
+
+  {% comment %} <a href="{% url 'profiles:profile' pk=blocked_user.id %}">Cancel</a> {% endcomment %}
+{% endblock %}

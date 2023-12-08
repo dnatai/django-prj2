@@ -1,0 +1,98 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .confirmation-container {
+        max-width: 600px; /* Adjust the max-width as needed */
+        margin: auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    .confirmation-container h2 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .confirmation-container p {
+        font-size: 1rem;
+        margin-bottom: 20px;
+        color: #555;
+    }
+
+    .confirmation-container form {
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .confirmation-container input[type="submit"] {
+        background-color: #e53e3e; /* Red color, you can change it */
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .confirmation-container a {
+        color: #3490dc; /* Blue color, you can change it */
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .confirmation-container a:hover {
+        text-decoration: underline;
+    }
+
+    #id_image{
+        background-color: #270041;
+        border-radius: 4px;
+        height: 50px;
+        width: 100%;
+        color: #ffffff;
+    }
+    #id_image::file-selector-button{
+        border: none;
+        border-radius: 7px;
+        color: 432f9f;
+        background-color: #ffffff;
+        height: 30px;
+        cursor: pointer;
+        transition: all .25s ease-in;
+        margin-top: 1px;
+        margin-left: 10px;
+    }
+</style>
+
+
+        <!-- Main Contents -->
+        <div class="main_content">
+            <div class="mcontainer">
+
+                <div class="bg-white lg:divide-x lg:flex lg:shadow-md rounded-md shadow lg:rounded-xl overflow-hidden lg:m-0 -mx-4">
+                    
+                    {% include 'partials/group_sidebar.html' %}
+                    <div class="lg:w-2/3 confirmation-container">
+                        <h2>Confirm Delete</h2>
+                        <p>Are you sure you want to delete the page "{{ group.name }}"?</p>
+
+                      <form method="post" action="{% url 'core:delete_group' group.id %}">
+                        {% csrf_token %}
+                        <input type="submit" value="Delete">
+                      </form>
+
+                      <a href="{% url 'core:feed'%}">Cancel</a>  <!-- Replace 'profile' with the URL name of the user's profile -->
+                                            
+
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock content %}

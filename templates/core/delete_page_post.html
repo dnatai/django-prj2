@@ -1,0 +1,67 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f5f5f5;
+    }
+
+    .confirmation-container {
+        max-width: 600px;
+        margin: 75px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+        color: #333;
+    }
+
+    p {
+        font-size: 1.2rem;
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    form {
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    input[type="submit"] {
+        background-color: #e53e3e; /* Red color, you can change it */
+        color: #fff;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    a {
+        color: #3490dc; /* Blue color, you can change it */
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="confirmation-container">
+    <h2>Confirm Delete</h2>
+    <p>Are you sure you want to delete the post "{{ page_post.title }}"?</p>
+    <form method="post" action="{% url 'core:delete_page_post' page_post.page.id %}">
+        {% csrf_token %}
+        <input type="submit" value="Delete">
+    </form>
+    <a href="{% url 'core:feed' %}">Cancel</a>
+</div>
+
+{% endblock %}

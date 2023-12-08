@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Group Membership</title>
+</head>
+<body>
+    <h1>Manage Group Membership</h1>
+
+    {% if members %}
+        <ul>
+            {% for member in members %}
+                <li>
+                    <p>User: {{ member.user.username }}</p>
+                    <p>Status: {{ member.status }}</p>
+                    <form method="post" action="{% url 'core:manage-membership' group_id=group.id user_id=member.user.id action='approve' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit">Approve</button>
+                    </form>
+                    <form method="post" action="{% url 'core:manage-membership' group_id=group.id user_id=member.user.id action='reject' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit">Reject</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No pending membership requests</p>
+    {% endif %}
+
+    <a href="{% url 'core:group_post_list' group_id=group.id %}">Back to Group Post List</a>
+</body>
+</html>
